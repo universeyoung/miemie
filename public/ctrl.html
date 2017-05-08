@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example 01.02 -First Scene</title>
+    <script src="/javascripts/dat.gui.js"></script>
+    <script src="/javascripts/jquery-1.9.0.js"></script>
+    <script src="javascripts/bootstrap.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+
+    <style>
+        body{
+            margin:0;
+            overflow:hidden;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="Stats-output"></div>
+
+<script >
+    $(function () {
+        var color='#000000';
+        var controls=new function () {
+            this.rotationSpeed=0.02;
+            this.bouncingSpeed=0.03;
+            this.ambientColor=color;
+        };
+
+        var gui=new dat.GUI();
+        var bSpeedController=gui.add(controls,'rotationSpeed',-0.5,0.5);
+        var rSpeedController=gui.add(controls,'bouncingSpeed',0,1);
+        var aColorController=gui.addColor(controls,'ambientColor');
+        var sp,ci,al;
+        function a() {
+            $.ajax({
+                url: '/control/getV',
+                dataType: 'json',
+                success: function (s) {
+                    bSpeedController.setValue(s.sp);
+                    rSpeedController.setValue(s.cir);
+                    aColorController.setValue(s.alc);
+                }
+            });
+            return 0;
+        }
+        a();
+//        bSpeedController.listen();
+//        rSpeedController.listen();
+        rSpeedController.onChange(function (value) {
+            $.ajax({
+                url: '/control/r',
+                type:'post',
+                data:{r:value}
+            });
+        });
+        bSpeedController.onChange(function (value) {
+            $.ajax({
+                url: '/control/b',
+                type:'post',
+                data:{b:value}
+            });
+        });
+        aColorController.onChange(function (value) {
+            color=value;
+            $.ajax({
+                url: '/control/c',
+                type:'post',
+                data:{c:value}
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example 7:Camera-Change</title>
+    <script src="../../public/javascripts/three.js"></script>
+    <script src="../../public/javascripts/stats.js"></script>
+    <script src="../../public/javascripts/jquery-1.9.0.js"></script>
+    <script src="../../public/javascripts/dat.gui.js"></script>
+    <style>
+        body{
+            margin:0;
+            overflow:hidden;
+        }
+    </style>
+</head>
+<body>
+<!--<div id="Stats-output"></div>-->
+<div id="WebGL-output"></div>
+<script>
+    $(function () {
+        var scene=new THREE.Scene();
+
+        var camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
+
+
+        var renderer=new THREE.WebGLRenderer();
+        renderer.setClearColor('white');
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        renderer.shadowMapEnabled=true;
+
+        var spotLight=new THREE.SpotLight(0x090909);
+
+        var planeGeometry=new THREE.PlaneGeometry(60,40,1,1);
+        var planeMaterial=new THREE.MeshLambertMaterial({color:0xcccccc});
+        var plane=new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.rotation.x=-0.5*Math.PI;
+        plane.position.x=0;
+        plane.position.y=0;
+        plane.position.z=0;
+//        plane.receiveShadow=true;  //慎重，写了反而看不见了
+        scene.add(plane);
+
+        camera.position=new THREE.Vector3(50,40,30);
+        camera.lookAt(scene.position);
+
+        $("#WebGL-output").append(renderer.domElement);
+
+        function initStats() {
+            var stats=new Stats();
+            stats.style.position.
+        }
+
+        function render() {
+            requestAnimationFrame(render);
+            renderer.render(scene,camera);
+        }
+        render();
+    });
+</script>
+</body>
+</html>
